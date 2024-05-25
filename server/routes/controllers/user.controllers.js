@@ -1,4 +1,5 @@
 const User = require("../../models/User")
+const errorHandler = require("../../middleware/error")
 const bcrypt = require("bcrypt")
 
 const test = (req, res) => {
@@ -10,7 +11,7 @@ const test = (req, res) => {
     }
 }
 
-const signupController = async(req, res) => {
+const signupController = async(req, res, next) => {
     try {
         const hassedPassword = bcrypt.hashSync(req.body.password, 8)
         const user = await User.create({
@@ -18,10 +19,10 @@ const signupController = async(req, res) => {
             password: hassedPassword,
             email: req.body.email
         })
-        res.json({msg: user, success: true})
+        res.status(201).json({user, msg:"user created successfully", success: true})
     }
     catch(err) {
-        res.json({msg: err.message})
+        next(err)
     }
 }
 

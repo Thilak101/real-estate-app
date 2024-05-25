@@ -3,6 +3,7 @@ require("dotenv").config()
 const connectDB = require("./config/db")
 const cors = require("cors")
 const apiRouter = require("./routes")
+const err = require("./middleware/err")
 
 const PORT = 4000 || process.env.PORT
 const app = express()
@@ -11,6 +12,7 @@ connectDB()
 app.use(express.json())
 app.use(cors())
 app.use("/api", apiRouter)
+app.use(err)
 
 
 app.get("/", (req, res) => {
