@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux"
+import { useDispatch, useSelector } from "react-redux";
 import { signInFailure, signInStart, signInSuccess } from "../../features/user";
+import { Auth } from "../../components";
 
 const Signin = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-  const {loading, error} = useSelector(state => state.user)
+  const { loading, error } = useSelector((state) => state.user);
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setFormData({
@@ -22,7 +23,7 @@ const Signin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      dispatch(signInStart())
+      dispatch(signInStart());
       const response = await fetch("/api/user/signin", {
         method: "POST",
         headers: {
@@ -32,14 +33,14 @@ const Signin = () => {
       });
       const data = await response.json();
       if (data.success === false) {
-        dispatch(signInFailure(data.message))
+        dispatch(signInFailure(data.message));
         return;
       }
-      dispatch(signInSuccess(data))
+      dispatch(signInSuccess(data));
       navigate("/");
       return;
     } catch (err) {
-      dispatch(signInFailure(err.message))
+      dispatch(signInFailure(err.message));
       return;
     }
   };
@@ -52,7 +53,7 @@ const Signin = () => {
           type="email"
           placeholder="email"
           className="border p-3 rounded-lg"
-          id="username"
+          id="email__signin"
           name="email"
           onChange={handleChange}
         />
@@ -60,7 +61,7 @@ const Signin = () => {
           type="password"
           placeholder="password"
           className="border p-3 rounded-lg"
-          id="username"
+          id="password__signin"
           name="password"
           onChange={handleChange}
         />
@@ -76,6 +77,7 @@ const Signin = () => {
         >
           {loading ? "Loading..." : "Sign In"}
         </button>
+        <Auth />
       </form>
       <div className="flex gap-2 mt-5">
         <p>Do not have an account?</p>

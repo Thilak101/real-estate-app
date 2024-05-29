@@ -15,6 +15,10 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    avatar: {
+        type: String,
+        default: "https://picsum.photos/200"
+    }
 }, {timestamps: true})
 
 const User = mongoose.model('users', UserSchema)
