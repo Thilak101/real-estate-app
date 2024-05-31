@@ -54,7 +54,7 @@ const signinController = async (req, res, next) => {
 const updateUserController = async (req, res, next) => {
   try {
     if(req.user.id !== req.params.id) {
-      return next(401, 'You can only update your own account')
+      return next(errorHandler(401, 'You can only update your own account'))
     }
     if(req.body.password) {
       req.body.password = bcrypt.hashSync(req.body.password, 10)
