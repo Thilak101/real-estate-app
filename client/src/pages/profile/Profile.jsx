@@ -15,6 +15,8 @@ import {
   deleteUserFailure,
   deleteUserSuccess,
   deleteUserStart,
+  signInStart,
+  signInFailure,
 } from "../../features/user";
 
 const Profile = () => {
@@ -85,18 +87,32 @@ const Profile = () => {
 
   const handleDeleteUser = async () => {
     try {
-      dispatch(deleteUserStart())
+      dispatch(deleteUserStart());
       const res = await fetch(`/api/user/delete/${currentUser._id}`, {
         method: "DELETE",
-      })
-      const data = await res.json()
-      if(data.success == false) {
-        dispatch(deleteUserFailure(data.message))
-        return
+      });
+      const data = await res.json();
+      if (data.success == false) {
+        dispatch(deleteUserFailure(data.message));
+        return;
       }
-      dispatch(deleteUserSuccess(data))
+      dispatch(deleteUserSuccess(data));
     } catch (err) {
-      dispatch(deleteUserFailure(err.message))
+      dispatch(deleteUserFailure(err.message));
+    }
+  };
+  const handleSignout = async () => {
+    try {
+      dispatch(signInStart());
+      const res = await fetch("/api/user/signout");
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(signInFailure(data.message));
+        return;
+      }
+      dispatch(deleteUserSuccess(data));
+    } catch (err) {
+      dispatch(deleteUserFailure(data.message));
     }
   };
 
@@ -178,7 +194,9 @@ const Profile = () => {
         >
           Delete Account
         </span>
-        <span className="text-red-700 cursor-pointer">Sign Out</span>
+        <span className="text-red-700 cursor-pointer" onClick={handleSignout}>
+          Sign Out
+        </span>
       </div>
       <p className="text-red-700 mt-5">{error ? error : ""}</p>
       <p className="text-green-700 mt-5">
