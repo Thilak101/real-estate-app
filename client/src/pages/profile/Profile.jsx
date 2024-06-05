@@ -18,6 +18,7 @@ import {
   signInStart,
   signInFailure,
 } from "../../features/user";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const { currentUser, loading, error } = useSelector(
@@ -115,7 +116,7 @@ const Profile = () => {
       dispatch(deleteUserFailure(data.message));
     }
   };
-
+  console.log(currentUser);
   return (
     <div className="p-3 max-w-lg mx-auto">
       <h1 className="text-3xl font-semibold text-center my-7">Profile</h1>
@@ -186,6 +187,17 @@ const Profile = () => {
         >
           {loading ? "Loading" : "Update"}
         </button>
+        <Link
+          className="
+        bg-green-700 
+        text-white 
+        p-3 
+        rounded-lg 
+        uppercase 
+        text-center
+      hover:bg-green-600"
+          to={"/create-listing"}
+        >create-listing</Link>
       </form>
       <div className="flex justify-between mt-5">
         <span
