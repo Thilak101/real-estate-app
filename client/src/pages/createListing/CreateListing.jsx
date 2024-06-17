@@ -292,9 +292,9 @@ const CreateListing = () => {
             <div className="flex items-center gap-2 my-2">
               <input
                 type="number"
-                id="discountedPrice"
+                id="discountPrice"
                 min={"50"}
-                max="1000"
+                max="300"
                 required
                 className="p-3 border-gray-300 rounded-lg"
                 onChange={handleChange}
