@@ -33,7 +33,6 @@ const Profile = () => {
   const [showListingsError, setShowListingsError] = useState(false);
   const [userLisings, setUserListings] = useState([]);
   const dispatch = useDispatch();
-  console.log(userLisings[0]);
   useEffect(() => {
     if (file) {
       handleFileUpload(file);
@@ -289,7 +288,9 @@ const Profile = () => {
                 >
                   Delete
                 </button>
-                <button className="text-green-700">Edit</button>
+                <Link to={`/update-listing/${listing._id}`}>
+                  <button className="text-green-700">Edit</button>
+                </Link>
               </div>
             </div>
           ))}

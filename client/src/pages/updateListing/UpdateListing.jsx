@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { app } from "../../firebase";
 import {
   getDownloadURL,
@@ -6,11 +6,12 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
-import {useSelector} from "react-redux"
-import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
 
 const CreateListing = () => {
-  const {currentUser} = useSelector(state => state.user.user)
+  const { currentUser } = useSelector((state) => state.user.user);
+  const params = useParams();
   const [files, setFiles] = useState([]);
   const [formData, setFormData] = useState({
     imageUrls: [],
@@ -31,7 +32,22 @@ const CreateListing = () => {
   const [uploading, setUploading] = useState(false);
   const [err, setErr] = useState(false);
   const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate()
+  useEffect(() => {
+    const fetchListing = async () => {
+      const listingId = params.listingId;
+      const res = await fetch(`/api/list/get/${listingId}`);
+      const data = await res.json();
+      setFormData(data.listing);
+      if(data.success === false) {
+        console.log(data.message)
+        return
+      }
+    };
+    fetchListing();
+  }, []);
+
   const handleImageSubmit = (e) => {
     if (files.length > 0 && files.length + formData.imageUrls.length < 7) {
       setUploading(true);
@@ -125,25 +141,23 @@ const CreateListing = () => {
     try {
       e.preventDefault();
       setLoading(true);
-      const res = await fetch("/api/list/create", {
-        method: "POST",
+      const res = await fetch(`/api/list/update/${params.listingId}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           ...formData,
-          userRef: currentUser._id
+          userRef: currentUser._id,
         }),
       });
       const data = await res.json();
-      console.log(data)
       setLoading(false);
       if (data.success === false) {
         setErr(data.message);
       }
       setErr(false);
       navigate(`/listing/${data._id}`)
-
     } catch (err) {
       setErr(err.message);
       setLoading(false);
@@ -158,7 +172,7 @@ const CreateListing = () => {
         text-center
         my-7"
       >
-        Create a Listing
+        Update a Listing
       </h1>
       <form
         action=""
@@ -378,13 +392,9 @@ const CreateListing = () => {
         hover:opacity-95
         disabled:opacity-F80"
           >
-            {loading ? "Creating...":  "Create Listing"}
+            {loading ? "Updating..." : "Update Listing"}
           </button>
-          {
-            err && (
-              <p className="text-red-700 text-sm">{err}</p>
-            )
-          }
+          {err && <p className="text-red-700 text-sm">{err}</p>}
         </div>
       </form>
     </main>
