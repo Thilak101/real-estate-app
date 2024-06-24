@@ -1,8 +1,7 @@
 import React from "react";
-import { Home, Profie, Signin, Signup, About, CreateListing } from "./pages";
+import { Home, Profie, Signin, Signup, About, CreateListing, UpdateListing, Listing } from "./pages";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Navbar, Private } from "./components";
-import UpdateListing from "./pages/updateListing/UpdateListing";
 
 const App = () => {
   return (
@@ -18,6 +17,7 @@ const App = () => {
         <Route path="/Signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/about" element={<About />} />
+        <Route path="/listing/:listingId" element={<Listing />} />
       </Routes>
     </BrowserRouter>
   );
