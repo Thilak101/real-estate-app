@@ -8,6 +8,7 @@ const {
   updateUserController,
   deleteController,
   signoutController,
+  getUser,
 } = require("./controllers/user.controllers");
 
 router.get("/", test);
@@ -16,5 +17,6 @@ router.post("/signin", signinController);
 router.put("/update/:id", verifyToken, updateUserController);
 router.delete("/delete/:id", verifyToken, deleteController);
 router.get("/signout", signoutController)
+router.get('/:id', verifyToken, getUser)
 
 module.exports = router;

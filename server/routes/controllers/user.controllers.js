@@ -95,9 +95,21 @@ const deleteController = async (req, res, next) => {
 
 const signoutController = async (req, res, next) => {
   try {
-    res.clearCookie("access_token")
-    res.status(200).json({msg: "User has been logged out!", success: true})
+    res.clearCookie("access_token");
+    res.status(200).json({ msg: "User has been logged out!", success: true });
   } catch {
+    next(err);
+  }
+};
+
+const getUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    if (!user) return next(errorHandler(404, "User not found"));
+    const { password: pass, ...rest } = user._doc;
+    res.status(200).json({ rest, msg: "user", success: true });
+  } catch (err) {
     next(err);
   }
 };
@@ -109,4 +121,5 @@ module.exports = {
   updateUserController,
   deleteController,
   signoutController,
+  getUser,
 };
