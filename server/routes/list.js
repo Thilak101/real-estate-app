@@ -4,7 +4,8 @@ const {
   getUserListing,
   deleteListing,
   updateListing,
-  getListing
+  getListing,
+  getListings
 } = require("./controllers/list.controllers");
 const { verifyToken } = require("../middleware/verifyUser");
 
@@ -13,4 +14,5 @@ router.get("/listings/:id", verifyToken, getUserListing);
 router.delete("/delete/:id", verifyToken, deleteListing);
 router.put("/update/:id", verifyToken, updateListing);
 router.get("/get/:id", getListing)
+router.get('/get', getListings)
 module.exports = router;
