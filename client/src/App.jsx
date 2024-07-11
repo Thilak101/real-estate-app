@@ -1,5 +1,5 @@
 import React from "react";
-import { Home, Profie, Signin, Signup, About, CreateListing, UpdateListing, Listing } from "./pages";
+import { Home, Profie, Signin, Signup, About, CreateListing, UpdateListing, Listing, Search } from "./pages";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Navbar, Private } from "./components";
 
@@ -17,6 +17,7 @@ const App = () => {
         <Route path="/Signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/about" element={<About />} />
+        <Route path="/search" element={<Search />} />
         <Route path="/listing/:listingId" element={<Listing />} />
       </Routes>
     </BrowserRouter>
