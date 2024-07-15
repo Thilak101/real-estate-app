@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Cards } from "../../components";
 
 const Search = () => {
   const [sidebardata, setSidebardata] = useState({
@@ -15,7 +16,7 @@ const Search = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [listings, setListings] = useState([]);
-  console.log(listings)
+  console.log(listings);
   const handleChange = (e) => {
     if (
       e.target.id === "all" ||
@@ -82,12 +83,12 @@ const Search = () => {
     }
 
     const fetchListing = async () => {
-      setLoading(true)
-      const searchQuery = urlParams.toString()
-      const res = await fetch(`/api/list/get?${searchQuery}`)
-      const data = await res.json()
-      setListings(data)
-      setLoading(false)
+      setLoading(true);
+      const searchQuery = urlParams.toString();
+      const res = await fetch(`/api/list/get?${searchQuery}`);
+      const data = await res.json();
+      setListings(data.listings);
+      setLoading(false);
     };
     fetchListing();
   }, [location.search]);
@@ -106,6 +107,7 @@ const Search = () => {
     console.log(searchQuery);
     navigate(`/search?${searchQuery}`);
   };
+  console.log(loading, listings)
 
   return (
     <div className="flex flex-col md:flex-row">
@@ -223,6 +225,21 @@ const Search = () => {
         <h1 className="text-3xl font-semibold border-b p-3 text-slate-700 mt-5">
           Listing results:{" "}
         </h1>
+        <div className="p-7 flex flex-wrap gap-4">
+          {!loading && listings.length === 0 && (
+            <p className="text-xl text-slate-700">No Listing Found!</p>
+          )}
+          {loading && (
+            <p className="text-xl text-slate-700 text-center w-full">
+              Loading...
+            </p>
+          )}
+          {
+            !loading && listings && listings.map(listing => {
+              return <Cards key={listing._id} listing={listing} />
+            })
+          }
+        </div>
       </div>
     </div>
   );
